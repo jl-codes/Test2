@@ -34,7 +34,16 @@ class EditViewController: UIViewController {
       super.viewDidLoad()
       
       guard let episode = episode else { return }
-      let url = episode.image.original
+      guard let url = episode.image?.original else { return }
+      
+      func assignData() {
+        self.titleLabel.text = "Episode Title: \(episode.name)"
+        self.firstAirLabel.text = "Air Data: \(episode.airdate)"
+        self.airtimeLabel.text = "Airtime: \(episode.airtime)"
+        self.seasonLabel.text = "Season: \(episode.season)"
+        self.episodeLabel.text = "Episode: \(episode.number)"
+        self.episodeSummary.text = "Summary: \(String((episode.summary.dropLast(4).dropFirst(3))))"
+      }
       
       URLSession.shared.dataTask(with: url) { data, response, error in
         guard
@@ -42,23 +51,12 @@ class EditViewController: UIViewController {
           let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
           let data = data, error == nil,
           let image = UIImage(data: data) else {
-            self.titleLabel.text = "Episode Title: \(episode.name)"
-            self.firstAirLabel.text = "Air Data: \(episode.airdate)"
-            self.airtimeLabel.text = "Airtime: \(episode.airtime)"
-            self.seasonLabel.text = "Season: \(episode.season)"
-            self.episodeLabel.text = "Episode: \(episode.number)"
-            self.episodeSummary.text = "Summary: \(String((episode.summary.dropLast(4).dropFirst(3))))"
-            
+            assignData()
             return
         }
         
         DispatchQueue.main.async() {
-          self.titleLabel.text = "Title: \(episode.name)"
-          self.firstAirLabel.text = "Airdate: \(episode.airdate)"
-          self.airtimeLabel.text = "Airtime: \(episode.airtime)"
-          self.seasonLabel.text = "Season: \(episode.season)"
-          self.episodeLabel.text = "Episode: \(episode.number)"
-          self.episodeSummary.text = "Summary: \(String((episode.summary.dropLast(4).dropFirst(3))))"
+          assignData()
           self.episodeImage.image = image
         }
       }.resume()

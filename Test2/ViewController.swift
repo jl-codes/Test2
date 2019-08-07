@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class ViewController: UIViewController {
 
   @IBOutlet weak var episodeTableView: UITableView!
@@ -27,7 +26,6 @@ class ViewController: UIViewController {
     episodeTableView.dataSource = self
     episodeTableView.delegate = self
     episodeTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-    print("view did load")
     
     searchController = UISearchController(searchResultsController: nil)
     searchController.searchResultsUpdater = self
@@ -36,16 +34,13 @@ class ViewController: UIViewController {
     episodeTableView.tableHeaderView = searchController.searchBar
     
     definesPresentationContext = true
-    
-//    episodeTableView.reloadData()
-    
-//    manager.save()
+  
     
     let gameOfThronesURLString = "https://api.tvmaze.com/shows/82?embed=seasons&embed=episodes"
     if let url = URL(string: gameOfThronesURLString) {
       URLSession.shared.dataTask(with: url) { (data, response, error) in
         guard let data = data else {
-          print("No Network--User Defaults: \(UserDefaults.standard.dictionaryRepresentation())")
+          print("FAILURE: api call unsuccessful")
           return
         }
         
@@ -55,23 +50,10 @@ class ViewController: UIViewController {
             if let episodes = (self.gameOfThrones?.embedded.episodes) {
               self.episodes = episodes
               
-              self.sectionedEpisodes[1] = episodes.filter{ $0.season == 1 }
-              self.sectionedEpisodes[2] = episodes.filter{ $0.season == 2 }
-              self.sectionedEpisodes[3] = episodes.filter{ $0.season == 3 }
-              self.sectionedEpisodes[4] = episodes.filter{ $0.season == 4 }
-              self.sectionedEpisodes[5] = episodes.filter{ $0.season == 5 }
-              self.sectionedEpisodes[6] = episodes.filter{ $0.season == 6 }
-              self.sectionedEpisodes[7] = episodes.filter{ $0.season == 7 }
-              self.sectionedEpisodes[8] = episodes.filter{ $0.season == 8 }
-              
-              self.filteredSectionedEpisodes[1] = self.sectionedEpisodes[1]
-              self.filteredSectionedEpisodes[2] = self.sectionedEpisodes[2]
-              self.filteredSectionedEpisodes[3] = self.sectionedEpisodes[3]
-              self.filteredSectionedEpisodes[4] = self.sectionedEpisodes[4]
-              self.filteredSectionedEpisodes[5] = self.sectionedEpisodes[5]
-              self.filteredSectionedEpisodes[6] = self.sectionedEpisodes[6]
-              self.filteredSectionedEpisodes[7] = self.sectionedEpisodes[7]
-              self.filteredSectionedEpisodes[8] = self.sectionedEpisodes[8]
+              for i in 1...8 {
+                self.sectionedEpisodes[i] = episodes.filter{ $0.season == i }
+                self.filteredSectionedEpisodes[i] = self.sectionedEpisodes[i]
+              }
             }
             self.episodeTableView.reloadData()
           }
@@ -99,7 +81,6 @@ extension ViewController: UISearchResultsUpdating {
   }
 }
 
-
 extension ViewController: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
     return filteredSectionedEpisodes.count
@@ -120,7 +101,7 @@ extension ViewController: UITableViewDataSource {
     
     guard let episodeList = filteredSectionedEpisodes[dictionaryKeys[indexPath.section]] else { return cell }
     
-    let url = episodeList[indexPath.row].image.medium
+    guard let url = episodeList[indexPath.row].image?.medium else { return cell }
     
     URLSession.shared.dataTask(with: url) { data, response, error in
       guard
@@ -156,17 +137,3 @@ extension ViewController: UITableViewDelegate {
     }
   }
 }
-/*
-extension ViewController: EditViewControllerDelegate {
-  func favorite(to favEpisode: String) {
-    guard let selectEpisode = episodeTableView.indexPathForSelectedRow else { return }
-    let episodeList = manager.getEpisodeList()
-    let episodeToMark = episodeList[selectEpisode.row]
-    manager.update(episode: episodeToMark, with: favEpisode)
-    manager.save()
-    
-    episodeTableView.reloadData()
-    episodeTableView.reloadRows(at: [newIndex], with: .automatic)
-    }
-  }
-*/
