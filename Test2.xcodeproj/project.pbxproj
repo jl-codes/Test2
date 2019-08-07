@@ -86,6 +86,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0475393A22FB99D500AC4FFE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				04B1CB6322E6362900630F02 /* GameOfThrones.swift */,
+				04B1CB6722E636BD00630F02 /* Embedded.swift */,
+				04B1CB6522E6368900630F02 /* Episode.swift */,
+				04B1CB6122E635B500630F02 /* Image.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0475393B22FB99E000AC4FFE /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		0475393C22FB99EE00AC4FFE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				04B1CB4F22E24BE200630F02 /* EditViewController.swift */,
+				04B1CB2022E24B2400630F02 /* ViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		04B1CB1222E24B2400630F02 = {
 			isa = PBXGroup;
 			children = (
@@ -110,13 +137,10 @@
 			isa = PBXGroup;
 			children = (
 				04B1CB1E22E24B2400630F02 /* AppDelegate.swift */,
-				04B1CB2022E24B2400630F02 /* ViewController.swift */,
-				04B1CB6722E636BD00630F02 /* Embedded.swift */,
-				04B1CB6522E6368900630F02 /* Episode.swift */,
-				04B1CB6322E6362900630F02 /* GameOfThrones.swift */,
 				04B1CB2222E24B2400630F02 /* Main.storyboard */,
-				04B1CB4F22E24BE200630F02 /* EditViewController.swift */,
-				04B1CB6122E635B500630F02 /* Image.swift */,
+				0475393C22FB99EE00AC4FFE /* View */,
+				0475393B22FB99E000AC4FFE /* ViewModel */,
+				0475393A22FB99D500AC4FFE /* Model */,
 				04B1CB2822E24B2600630F02 /* Assets.xcassets */,
 				04B1CB2A22E24B2600630F02 /* LaunchScreen.storyboard */,
 				04B1CB2D22E24B2600630F02 /* Info.plist */,
